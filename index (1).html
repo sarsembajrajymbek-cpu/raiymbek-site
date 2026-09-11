@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Райымбек — монтаж и обслуживание ВОЛС</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #0F1720;
+    --bg-alt: #0B121A;
+    --card: #18232E;
+    --card-border: #263544;
+    --text: #E4E9EE;
+    --text-dim: #93A3B3;
+    --accent: #FF6A1F;
+    --accent-dim: #C7551F;
+    --cyan: #3FB8C9;
+    --line: #23303C;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope', -apple-system, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  a{ color:inherit; }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,23,32,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px;
+    max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-weight:700; font-size:18px; letter-spacing:-0.01em;
+  }
+  .logo-mark{
+    width:28px; height:28px; flex-shrink:0;
+  }
+  nav ul{
+    display:flex; gap:32px; list-style:none;
+  }
+  nav ul a{
+    text-decoration:none; font-size:14.5px; color:var(--text-dim);
+    transition: color .15s ease;
+  }
+  nav ul a:hover{ color:var(--text); }
+  .nav-cta{
+    background:var(--accent); color:#0F1720; font-weight:700;
+    padding:10px 20px; border-radius:3px; font-size:14px;
+    text-decoration:none; white-space:nowrap;
+    transition: background .15s ease;
+  }
+  .nav-cta:hover{ background:#ff7f3d; }
+  .nav-links-mobile{ display:none; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:88px 0 72px;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse 900px 480px at 82% -10%, rgba(255,106,31,0.10), transparent 60%),
+      var(--bg);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow-line{
+    display:flex; align-items:center; gap:10px;
+    color:var(--cyan); font-size:13px; margin-bottom:22px;
+  }
+  .eyebrow-line .dash{ width:24px; height:1px; background:var(--cyan); }
+
+  h1{
+    font-size:44px; font-weight:800; letter-spacing:-0.02em;
+    line-height:1.12;
+    margin-bottom:20px;
+  }
+  h1 span{ color:var(--accent); }
+
+  .hero-sub{
+    color:var(--text-dim); font-size:16.5px; max-width:480px; margin-bottom:32px;
+  }
+
+  .hero-actions{ display:flex; gap:14px; margin-bottom:40px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--accent); color:#0F1720; font-weight:700;
+    padding:14px 26px; border-radius:3px; text-decoration:none; font-size:15px;
+    display:inline-block; transition: background .15s ease, transform .1s ease;
+  }
+  .btn-primary:hover{ background:#ff7f3d; }
+  .btn-secondary{
+    border:1px solid var(--card-border); color:var(--text);
+    padding:14px 26px; border-radius:3px; text-decoration:none; font-size:15px;
+    display:inline-block; transition: border-color .15s ease, background .15s ease;
+  }
+  .btn-secondary:hover{ border-color:var(--cyan); background:rgba(63,184,201,0.06); }
+
+  .hero-stats{
+    display:flex; gap:36px; padding-top:28px; border-top:1px solid var(--line);
+  }
+  .stat-num{ font-family:'JetBrains Mono', monospace; font-size:24px; font-weight:600; color:var(--accent); }
+  .stat-label{ font-size:12.5px; color:var(--text-dim); margin-top:4px; }
+
+  .hero-visual{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:6px;
+    padding:28px;
+  }
+  .hero-visual svg{ width:100%; height:auto; display:block; }
+  .hero-visual-caption{
+    margin-top:16px; padding-top:16px; border-top:1px dashed var(--line);
+    font-size:12.5px; color:var(--text-dim); font-family:'JetBrains Mono', monospace;
+    display:flex; justify-content:space-between;
+  }
+
+  /* ---------- Section generic ---------- */
+  section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .section-head{ max-width:600px; margin-bottom:48px; }
+  .section-kicker{
+    color:var(--cyan); font-size:13px; margin-bottom:12px; display:flex; align-items:center; gap:10px;
+  }
+  .section-kicker .dash{ width:24px; height:1px; background:var(--cyan); }
+  h2{ font-size:30px; font-weight:800; letter-spacing:-0.015em; margin-bottom:14px; }
+  .section-desc{ color:var(--text-dim); font-size:15.5px; }
+
+  /* ---------- Services ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:6px; overflow:hidden;
+  }
+  .service-card{
+    background:var(--card); padding:32px 28px;
+  }
+  .service-num{
+    font-family:'JetBrains Mono', monospace; color:var(--accent); font-size:13px; margin-bottom:18px;
+  }
+  .service-card h3{ font-size:18px; font-weight:700; margin-bottom:10px; }
+  .service-card p{ color:var(--text-dim); font-size:14.5px; }
+
+  /* ---------- Process (timeline, since content IS sequential) ---------- */
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{
+    display:grid; grid-template-columns:64px 1fr; gap:24px;
+    padding:26px 0; border-top:1px solid var(--line);
+  }
+  .process-item:last-child{ border-bottom:1px solid var(--line); }
+  .process-index{
+    font-family:'JetBrains Mono', monospace; color:var(--text-dim); font-size:14px; padding-top:2px;
+  }
+  .process-item h3{ font-size:17px; font-weight:700; margin-bottom:6px; }
+  .process-item p{ color:var(--text-dim); font-size:14.5px; max-width:640px; }
+
+  /* ---------- Equipment / specs table ---------- */
+  .specs-table{ width:100%; border-collapse:collapse; }
+  .specs-table th{
+    text-align:left; font-size:12.5px; color:var(--text-dim); font-weight:600;
+    padding:12px 16px; border-bottom:1px solid var(--card-border);
+    font-family:'JetBrains Mono', monospace; text-transform:none;
+  }
+  .specs-table td{
+    padding:16px; border-bottom:1px solid var(--line); font-size:14.5px;
+  }
+  .specs-table tr:hover td{ background:rgba(255,255,255,0.015); }
+  .specs-table .tag{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-size:12px;
+    color:var(--cyan); background:rgba(63,184,201,0.08); border:1px solid rgba(63,184,201,0.25);
+    padding:2px 8px; border-radius:3px;
+  }
+
+  /* ---------- Color swatch strip (nice tie-in with theme) ---------- */
+  .swatch-strip{ display:flex; border-radius:6px; overflow:hidden; height:40px; margin-top:36px; }
+  .swatch{ flex:1; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;
+  }
+  .contact-item{ margin-bottom:24px; }
+  .contact-label{ font-size:12.5px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; margin-bottom:6px; }
+  .contact-value{ font-size:17px; font-weight:600; }
+  .contact-value a{ text-decoration:none; }
+  .contact-value a:hover{ color:var(--accent); }
+
+  .form-field{ margin-bottom:18px; }
+  .form-field label{ display:block; font-size:13px; color:var(--text-dim); margin-bottom:8px; }
+  .form-field input, .form-field textarea{
+    width:100%; background:var(--bg-alt); border:1px solid var(--card-border);
+    color:var(--text); padding:12px 14px; border-radius:4px; font-family:'Manrope', sans-serif; font-size:14.5px;
+  }
+  .form-field input:focus, .form-field textarea:focus{
+    outline:none; border-color:var(--accent);
+  }
+  .form-field textarea{ resize:vertical; min-height:100px; }
+
+  footer{
+    padding:32px 0; display:flex; justify-content:space-between; align-items:center;
+    color:var(--text-dim); font-size:13.5px;
+  }
+
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .services-grid{ grid-template-columns:1fr; }
+    .contact-grid{ grid-template-columns:1fr; }
+    nav ul{ display:none; }
+    h1{ font-size:32px; }
+    .hero-stats{ flex-wrap:wrap; row-gap:16px; }
+  }
+
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" stroke="#FF6A1F" stroke-width="1.5"/>
+        <path d="M6 14 L11 14 L13 10 L15 18 L17 14 L22 14" stroke="#FF6A1F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+      </svg>
+      Райымбек
+    </div>
+    <ul>
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#process">Процесс</a></li>
+      <li><a href="#equipment">Оборудование</a></li>
+      <li><a href="#contact">Контакты</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Заявка на монтаж</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-line"><span class="dash"></span> Монтаж и обслуживание ВОЛС</div>
+      <h1>Сварка волокна и монтаж<br>муфт <span>без пересварок</span></h1>
+      <p class="hero-sub">Разделка, сварка, укладка и тестирование ОК любой ёмкости — от абонентских дропов до магистральных кабелей на 288+ волокон. Работаем в колодцах, на опорах и в подвесе.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Оставить заявку</a>
+        <a href="#process" class="btn-secondary">Как мы работаем</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">&lt;0.05</div>
+          <div class="stat-label">дБ затухание на сварке</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">сростков — протокол OTDR</div>
+        </div>
+        <div>
+          <div class="stat-num">24ч</div>
+          <div class="stat-label">аварийный выезд</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <svg viewBox="0 0 460 320" fill="none">
+        <!-- Splice closure schematic -->
+        <rect x="40" y="60" width="380" height="200" rx="8" stroke="#3FB8C9" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <!-- cable entries left -->
+        <line x1="0" y1="100" x2="40" y2="100" stroke="#0070C0" stroke-width="4"/>
+        <line x1="0" y1="130" x2="40" y2="130" stroke="#ED7D31" stroke-width="4"/>
+        <line x1="0" y1="160" x2="40" y2="160" stroke="#00B050" stroke-width="4"/>
+        <line x1="0" y1="190" x2="40" y2="190" stroke="#833C00" stroke-width="4"/>
+        <!-- cable entries right -->
+        <line x1="420" y1="100" x2="460" y2="100" stroke="#0070C0" stroke-width="4"/>
+        <line x1="420" y1="130" x2="460" y2="130" stroke="#ED7D31" stroke-width="4"/>
+        <line x1="420" y1="160" x2="460" y2="160" stroke="#00B050" stroke-width="4"/>
+        <line x1="420" y1="190" x2="460" y2="190" stroke="#833C00" stroke-width="4"/>
+        <!-- splice cassette -->
+        <rect x="90" y="90" width="280" height="140" rx="4" stroke="#E4E9EE" stroke-width="1" opacity="0.35" fill="none" stroke-dasharray="3 3"/>
+        <!-- fusion points -->
+        <circle cx="230" cy="100" r="3.5" fill="#0070C0"/>
+        <circle cx="230" cy="130" r="3.5" fill="#ED7D31"/>
+        <circle cx="230" cy="160" r="3.5" fill="#00B050"/>
+        <circle cx="230" cy="190" r="3.5" fill="#833C00"/>
+        <line x1="40" y1="100" x2="230" y2="100" stroke="#0070C0" stroke-width="1.4" opacity="0.6"/>
+        <line x1="40" y1="130" x2="230" y2="130" stroke="#ED7D31" stroke-width="1.4" opacity="0.6"/>
+        <line x1="40" y1="160" x2="230" y2="160" stroke="#00B050" stroke-width="1.4" opacity="0.6"/>
+        <line x1="40" y1="190" x2="230" y2="190" stroke="#833C00" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="100" x2="420" y2="100" stroke="#0070C0" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="130" x2="420" y2="130" stroke="#ED7D31" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="160" x2="420" y2="160" stroke="#00B050" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="190" x2="420" y2="190" stroke="#833C00" stroke-width="1.4" opacity="0.6"/>
+        <text x="60" y="245" fill="#93A3B3" font-family="JetBrains Mono, monospace" font-size="10">CABLE A</text>
+        <text x="370" y="245" fill="#93A3B3" font-family="JetBrains Mono, monospace" font-size="10">CABLE B</text>
+        <text x="185" y="255" fill="#93A3B3" font-family="JetBrains Mono, monospace" font-size="10">SPLICE TRAY</text>
+      </svg>
+      <div class="hero-visual-caption">
+        <span>МОГ / МТОК / МКО-совместимо</span>
+        <span>КДЗС 4525 · 60S</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-kicker"><span class="dash"></span> Услуги</div>
+      <h2>Полный цикл работ по волоконной линии</h2>
+      <p class="section-desc">От проектирования ввода до сдачи с протоколом измерений.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num mono">01</div>
+        <h3>Монтаж оптических муфт</h3>
+        <p>Разделка кабеля, сварка волокон, укладка в кассеты, герметизация — тупиковые и проходные муфты МТОК, МОГ, МКО.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">02</div>
+        <h3>Сварка волоконно-оптических линий</h3>
+        <p>Сварочный аппарат с контролем затухания на каждом шве, укладка КДЗС, соблюдение радиуса изгиба.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">03</div>
+        <h3>Прокладка и подвес ОК</h3>
+        <p>В грунте, канализации, колодцах ККС, на опорах и в самонесущем подвесе — с учётом провиса и температурной компенсации.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">04</div>
+        <h3>Измерения и диагностика</h3>
+        <p>Рефлектометрия (OTDR) с обеих сторон, протоколы затухания, поиск и устранение обрывов на действующих линиях.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">05</div>
+        <h3>Монтаж оптических кроссов</h3>
+        <p>Установка адаптерных панелей, разварка на пигтейлы, маркировка портов по проектной схеме.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">06</div>
+        <h3>Аварийно-восстановительные работы</h3>
+        <p>Оперативный выезд, локализация повреждения, временная и постоянная сварка на месте.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-kicker"><span class="dash"></span> Как мы работаем</div>
+      <h2>От допуска на объект до протокола OTDR</h2>
+      <p class="section-desc">Один и тот же порядок на каждом объекте — вне зависимости от типа муфты и числа кабелей.</p>
+    </div>
+    <div class="process-list">
+      <div class="process-item">
+        <div class="process-index">01</div>
+        <div>
+          <h3>Подготовка и допуск</h3>
+          <p>Ограждение зоны, проверка допуска, подбор муфты и комплекта под тип и число кабелей.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-index">02</div>
+        <div>
+          <h3>Разделка кабеля</h3>
+          <p>Снятие оболочки, удаление гидрофобного геля, разделение по модулям и волокнам с сохранением цветовой маркировки.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-index">03</div>
+        <div>
+          <h3>Ввод в муфту</h3>
+          <p>Фиксация силовых элементов, герметизация вводов термоусадкой или резьбовыми фитингами.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-index">04</div>
+        <div>
+          <h3>Сварка волокон</h3>
+          <p>Скол, сварка по схеме, термоусадка КДЗС на каждый шов с контролем затухания на аппарате.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-index">05</div>
+        <div>
+          <h3>Укладка и герметизация</h3>
+          <p>Размещение сростков в кассетах с соблюдением радиуса изгиба, сборка и опрессовка корпуса муфты.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-index">06</div>
+        <div>
+          <h3>Тестирование и сдача</h3>
+          <p>OTDR с обеих сторон, протокол измерений, маркировка и передача исполнительной документации.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="equipment">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-kicker"><span class="dash"></span> Оборудование</div>
+      <h2>С чем работаем</h2>
+      <p class="section-desc">Совместимость с основными сериями муфт и кассет, применяемых на сетях связи.</p>
+    </div>
+    <table class="specs-table">
+      <thead>
+        <tr><th>Серия / модель</th><th>Тип</th><th>Ёмкость (сростков)</th><th>Кабельных вводов</th><th>Применение</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>МТОК-Н8</td><td><span class="tag">тупиковая</span></td><td>36</td><td>4</td><td>Подвес, малогабаритная</td></tr>
+        <tr><td>МОГ-Т3-40</td><td><span class="tag">тупиковая</span></td><td>40</td><td>до 8</td><td>Колодец, тесное пространство</td></tr>
+        <tr><td>МТОК-Г4</td><td><span class="tag">тупиковая</span></td><td>до 480</td><td>10+</td><td>Магистральные узлы</td></tr>
+        <tr><td>МКО-С7/48</td><td><span class="tag">кросс</span></td><td>48</td><td>10</td><td>Магистраль + дроп-отводы FTTH</td></tr>
+        <tr><td>МТОК-А1</td><td><span class="tag">тупиковая</span></td><td>216</td><td>3</td><td>Бронированный кабель, повив стальной проволоки</td></tr>
+      </tbody>
+    </table>
+
+    <div class="swatch-strip" aria-hidden="true">
+      <div class="swatch" style="background:#0070C0"></div>
+      <div class="swatch" style="background:#ED7D31"></div>
+      <div class="swatch" style="background:#00B050"></div>
+      <div class="swatch" style="background:#833C00"></div>
+      <div class="swatch" style="background:#808080"></div>
+      <div class="swatch" style="background:#FFFFFF"></div>
+      <div class="swatch" style="background:#FF0000"></div>
+      <div class="swatch" style="background:#000000"></div>
+      <div class="swatch" style="background:#FFFF00"></div>
+      <div class="swatch" style="background:#7030A0"></div>
+      <div class="swatch" style="background:#FFC0CB"></div>
+      <div class="swatch" style="background:#00B0F0"></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="section-kicker"><span class="dash"></span> Контакты</div>
+      <h2>Обсудим объект</h2>
+      <p class="section-desc" style="margin-bottom:32px;">Пришлите тип кабеля, число волокон и место монтажа — подберём муфту и посчитаем работы.</p>
+
+      <div class="contact-item">
+        <div class="contact-label">ТЕЛЕФОН</div>
+        <div class="contact-value"><a href="tel:+77007007120">+7 700 700-71-20</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">EMAIL</div>
+        <div class="contact-value"><a href="mailto:info@optomontage.example">info@optomontage.example</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">РЕГИОН РАБОТ</div>
+        <div class="contact-value">Алматы и Алматинская область</div>
+      </div>
+    </div>
+
+    <form onsubmit="event.preventDefault(); alert('Заявка отправлена (демо-форма)');">
+      <div class="form-field">
+        <label for="name">Имя</label>
+        <input id="name" type="text" placeholder="Как к вам обращаться" required>
+      </div>
+      <div class="form-field">
+        <label for="phone">Телефон</label>
+        <input id="phone" type="tel" placeholder="+7 ___ ___ __ __" required>
+      </div>
+      <div class="form-field">
+        <label for="details">Что нужно сделать</label>
+        <textarea id="details" placeholder="Тип кабеля, число волокон, место монтажа (колодец / опора / подвес)"></textarea>
+      </div>
+      <button type="submit" class="btn-primary" style="border:none; cursor:pointer; width:100%;">Отправить заявку</button>
+    </form>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© 2026 Райымбек</span>
+    <span class="mono" style="color:var(--text-dim);">СХЕМА &nbsp;·&nbsp; СВАРКА &nbsp;·&nbsp; ИЗМЕРЕНИЯ</span>
+  </footer>
+</div>
+
+</body>
+</html>
