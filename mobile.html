@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ОптоМонтаж — монтаж и обслуживание ВОЛС</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #0F1720;
+    --bg-alt: #0B121A;
+    --card: #18232E;
+    --card-border: #263544;
+    --text: #E4E9EE;
+    --text-dim: #93A3B3;
+    --accent: #FF6A1F;
+    --cyan: #3FB8C9;
+    --line: #23303C;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope', -apple-system, sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-size:15px;
+    /* room for sticky bottom call bar */
+    padding-bottom: calc(64px + var(--safe-bottom));
+  }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+
+  .wrap{ padding:0 18px; }
+
+  /* ---------- Top bar (compact, mobile) ---------- */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:rgba(15,23,32,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:8px;
+    font-weight:700; font-size:16.5px; letter-spacing:-0.01em;
+  }
+  .logo-mark{ width:24px; height:24px; flex-shrink:0; }
+
+  .menu-btn{
+    background:none; border:1px solid var(--card-border); border-radius:6px;
+    width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+    color:var(--text);
+  }
+  .menu-btn svg{ width:20px; height:20px; }
+
+  nav ul{ list-style:none; }
+  .mobile-menu{
+    max-height:0; overflow:hidden;
+    transition: max-height .25s ease;
+    background:var(--bg-alt);
+    border-bottom:1px solid var(--line);
+  }
+  .mobile-menu.open{ max-height:340px; }
+  .mobile-menu ul{ padding:8px 18px 18px; }
+  .mobile-menu li{ border-bottom:1px solid var(--line); }
+  .mobile-menu li:last-child{ border-bottom:none; }
+  .mobile-menu a{
+    display:block; padding:14px 4px; text-decoration:none;
+    color:var(--text); font-size:15.5px;
+  }
+  .mobile-menu .menu-call{
+    display:block; margin-top:12px; text-align:center;
+    background:var(--accent); color:#0F1720; font-weight:700;
+    padding:13px; border-radius:6px; text-decoration:none;
+  }
+
+  /* ---------- Sticky bottom call bar (thumb-reach convenience) ---------- */
+  .bottom-bar{
+    position:fixed; left:0; right:0; bottom:0; z-index:70;
+    display:flex; gap:1px;
+    background:var(--line);
+    border-top:1px solid var(--line);
+    padding-bottom: var(--safe-bottom);
+  }
+  .bottom-bar a, .bottom-bar button{
+    flex:1; border:none; background:var(--card);
+    color:var(--text); font-weight:700; font-size:14px;
+    padding:16px 8px; text-align:center; text-decoration:none;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .bottom-bar .call{ background:var(--accent); color:#0F1720; }
+  .bottom-bar svg{ width:17px; height:17px; flex-shrink:0; }
+
+  /* ---------- Hero: lead with the thing people open the site for ---------- */
+  .hero{
+    padding:28px 0 32px;
+    border-bottom:1px solid var(--line);
+    background: radial-gradient(ellipse 480px 260px at 90% -10%, rgba(255,106,31,0.12), transparent 60%), var(--bg);
+  }
+  .eyebrow-line{
+    display:flex; align-items:center; gap:8px;
+    color:var(--cyan); font-size:12.5px; margin-bottom:14px;
+  }
+  .eyebrow-line .dash{ width:18px; height:1px; background:var(--cyan); }
+
+  h1{
+    font-size:28px; font-weight:800; letter-spacing:-0.02em;
+    line-height:1.18; margin-bottom:14px;
+  }
+  h1 span{ color:var(--accent); }
+
+  .hero-sub{ color:var(--text-dim); font-size:15px; margin-bottom:22px; }
+
+  .hero-actions{ display:flex; flex-direction:column; gap:10px; margin-bottom:26px; }
+  .btn-primary{
+    background:var(--accent); color:#0F1720; font-weight:700;
+    padding:15px 22px; border-radius:6px; text-decoration:none; font-size:15px;
+    text-align:center; display:block; border:none;
+  }
+  .btn-secondary{
+    border:1px solid var(--card-border); color:var(--text);
+    padding:15px 22px; border-radius:6px; text-decoration:none; font-size:15px;
+    text-align:center; display:block;
+  }
+
+  .hero-stats{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;
+    padding-top:20px; border-top:1px solid var(--line);
+  }
+  .stat-num{ font-family:'JetBrains Mono', monospace; font-size:19px; font-weight:600; color:var(--accent); }
+  .stat-label{ font-size:11px; color:var(--text-dim); margin-top:3px; line-height:1.3; }
+
+  .hero-visual{
+    margin-top:24px;
+    background:var(--card); border:1px solid var(--card-border);
+    border-radius:8px; padding:16px;
+  }
+  .hero-visual svg{ width:100%; height:auto; display:block; }
+  .hero-visual-caption{
+    margin-top:12px; padding-top:12px; border-top:1px dashed var(--line);
+    font-size:10.5px; color:var(--text-dim); font-family:'JetBrains Mono', monospace;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;
+  }
+
+  /* ---------- Quick-request card — moved up, right after hero, for mobile convenience ---------- */
+  .quick-request{
+    background:var(--card); border:1px solid var(--card-border); border-radius:10px;
+    padding:20px; margin:0 0 0 0;
+  }
+  .quick-request h2{ font-size:19px; margin-bottom:6px; }
+  .quick-request p{ color:var(--text-dim); font-size:13.5px; margin-bottom:16px; }
+  .form-field{ margin-bottom:14px; }
+  .form-field label{ display:block; font-size:12.5px; color:var(--text-dim); margin-bottom:6px; }
+  .form-field input, .form-field textarea{
+    width:100%; background:var(--bg-alt); border:1px solid var(--card-border);
+    color:var(--text); padding:13px 14px; border-radius:6px; font-family:'Manrope', sans-serif; font-size:16px;
+  }
+  .form-field input:focus, .form-field textarea:focus{ outline:none; border-color:var(--accent); }
+  .form-field textarea{ resize:vertical; min-height:88px; }
+
+  /* ---------- Section generic ---------- */
+  section{ padding:36px 0; border-bottom:1px solid var(--line); }
+  .section-head{ margin-bottom:22px; }
+  .section-kicker{
+    color:var(--cyan); font-size:12.5px; margin-bottom:8px; display:flex; align-items:center; gap:8px;
+  }
+  .section-kicker .dash{ width:18px; height:1px; background:var(--cyan); }
+  h2.section-title{ font-size:22px; font-weight:800; letter-spacing:-0.01em; margin-bottom:8px; }
+  .section-desc{ color:var(--text-dim); font-size:14px; }
+
+  /* ---------- Services: single column, tap-friendly ---------- */
+  .services-grid{ display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .service-card{ background:var(--card); padding:18px; }
+  .service-num{ font-family:'JetBrains Mono', monospace; color:var(--accent); font-size:12px; margin-bottom:8px; }
+  .service-card h3{ font-size:16px; font-weight:700; margin-bottom:6px; }
+  .service-card p{ color:var(--text-dim); font-size:13.5px; }
+
+  /* ---------- Process ---------- */
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{ display:grid; grid-template-columns:36px 1fr; gap:14px; padding:16px 0; border-top:1px solid var(--line); }
+  .process-item:last-child{ border-bottom:1px solid var(--line); }
+  .process-index{ font-family:'JetBrains Mono', monospace; color:var(--text-dim); font-size:13px; padding-top:1px; }
+  .process-item h3{ font-size:15px; font-weight:700; margin-bottom:4px; }
+  .process-item p{ color:var(--text-dim); font-size:13.5px; }
+
+  /* ---------- Equipment: cards instead of table on phone ---------- */
+  .equip-list{ display:flex; flex-direction:column; gap:10px; }
+  .equip-card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:8px; padding:14px 16px;
+  }
+  .equip-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .equip-name{ font-weight:700; font-size:15px; }
+  .tag{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--cyan); background:rgba(63,184,201,0.08); border:1px solid rgba(63,184,201,0.25);
+    padding:2px 8px; border-radius:4px; white-space:nowrap;
+  }
+  .equip-specs{ display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; }
+  .equip-spec-label{ font-size:10.5px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; }
+  .equip-spec-value{ font-size:13.5px; }
+  .equip-note{ grid-column:1 / -1; font-size:13px; color:var(--text-dim); margin-top:2px; }
+
+  .swatch-strip{ display:flex; border-radius:6px; overflow:hidden; height:32px; margin-top:20px; }
+  .swatch{ flex:1; }
+
+  /* ---------- Contact block (full form, at the end for people who scrolled to learn more) ---------- */
+  .contact-item{ margin-bottom:16px; }
+  .contact-label{ font-size:11.5px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; margin-bottom:5px; }
+  .contact-value{ font-size:16px; font-weight:600; }
+  .contact-value a{ text-decoration:none; }
+
+  footer{
+    padding:22px 0 24px; display:flex; flex-direction:column; gap:6px;
+    color:var(--text-dim); font-size:12.5px;
+  }
+
+  /* ---------- Desktop enhancement (site still works great wider) ---------- */
+  @media (min-width: 860px){
+    body{ font-size:16px; padding-bottom:0; }
+    .wrap{ max-width:1120px; margin:0 auto; padding:0 32px; }
+    .bottom-bar{ display:none; }
+    .menu-btn{ display:none; }
+    .mobile-menu{ display:none !important; }
+
+    .nav{ padding:18px 32px; max-width:1120px; margin:0 auto; }
+    nav.desktop-links ul{ display:flex; gap:32px; }
+    nav.desktop-links a{ text-decoration:none; font-size:14.5px; color:var(--text-dim); }
+    .nav-cta-desktop{
+      background:var(--accent); color:#0F1720; font-weight:700;
+      padding:10px 20px; border-radius:4px; font-size:14px; text-decoration:none;
+    }
+
+    .hero{ padding:80px 0 64px; }
+    .hero-inner{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:start; }
+    h1{ font-size:42px; }
+    .hero-sub{ font-size:16.5px; max-width:460px; }
+    .hero-actions{ flex-direction:row; }
+    .btn-primary, .btn-secondary{ display:inline-block; padding:14px 26px; }
+    .hero-stats{ grid-template-columns:repeat(3,auto); gap:36px; }
+    .hero-visual{ margin-top:0; }
+
+    .quick-request{ margin-top:0; }
+
+    section{ padding:72px 0; }
+    h2.section-title{ font-size:28px; }
+    .section-head{ max-width:600px; margin-bottom:40px; }
+
+    .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); }
+    .service-card{ padding:28px 24px; }
+
+    .equip-list{ display:none; }
+    .specs-table{ display:table; width:100%; border-collapse:collapse; }
+    .specs-table th{ text-align:left; font-size:12.5px; color:var(--text-dim); font-weight:600; padding:12px 16px; border-bottom:1px solid var(--card-border); font-family:'JetBrains Mono', monospace; }
+    .specs-table td{ padding:16px; border-bottom:1px solid var(--line); font-size:14.5px; }
+
+    .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  }
+  @media (max-width: 859px){
+    .specs-table{ display:none; }
+    .desktop-links{ display:none; }
+    .nav-cta-desktop{ display:none; }
+  }
+
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="13" stroke="#FF6A1F" stroke-width="1.5"/>
+        <path d="M6 14 L11 14 L13 10 L15 18 L17 14 L22 14" stroke="#FF6A1F" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+      </svg>
+      ОптоМонтаж
+    </div>
+
+    <nav class="desktop-links">
+      <ul>
+        <li><a href="#quick">Заявка</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#process">Процесс</a></li>
+        <li><a href="#equipment">Оборудование</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </nav>
+    <a href="#quick" class="nav-cta-desktop">Заявка на монтаж</a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Открыть меню" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#quick">Оставить заявку</a></li>
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#process">Как мы работаем</a></li>
+      <li><a href="#equipment">Оборудование</a></li>
+      <li><a href="#contact">Контакты</a></li>
+    </ul>
+    <div class="wrap">
+      <a href="tel:+70000000000" class="menu-call">Позвонить: +7 (000) 000-00-00</a>
+    </div>
+    <div style="height:14px;"></div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="eyebrow-line"><span class="dash"></span> Монтаж и обслуживание ВОЛС</div>
+      <h1>Сварка волокна и монтаж<br>муфт <span>без пересварок</span></h1>
+      <p class="hero-sub">Разделка, сварка, укладка и тестирование ОК любой ёмкости — от абонентских дропов до магистральных кабелей на 288+ волокон.</p>
+
+      <div class="hero-actions">
+        <a href="tel:+70000000000" class="btn-primary">Позвонить сейчас</a>
+        <a href="#quick" class="btn-secondary">Оставить заявку онлайн</a>
+      </div>
+
+      <div class="hero-stats">
+        <div><div class="stat-num">&lt;0.05</div><div class="stat-label">дБ затухание на сварке</div></div>
+        <div><div class="stat-num">100%</div><div class="stat-label">сростков с протоколом OTDR</div></div>
+        <div><div class="stat-num">24ч</div><div class="stat-label">аварийный выезд</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <svg viewBox="0 0 460 260" fill="none">
+        <rect x="30" y="40" width="400" height="160" rx="8" stroke="#3FB8C9" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <line x1="0" y1="75" x2="30" y2="75" stroke="#0070C0" stroke-width="4"/>
+        <line x1="0" y1="100" x2="30" y2="100" stroke="#ED7D31" stroke-width="4"/>
+        <line x1="0" y1="125" x2="30" y2="125" stroke="#00B050" stroke-width="4"/>
+        <line x1="0" y1="150" x2="30" y2="150" stroke="#833C00" stroke-width="4"/>
+        <line x1="430" y1="75" x2="460" y2="75" stroke="#0070C0" stroke-width="4"/>
+        <line x1="430" y1="100" x2="460" y2="100" stroke="#ED7D31" stroke-width="4"/>
+        <line x1="430" y1="125" x2="460" y2="125" stroke="#00B050" stroke-width="4"/>
+        <line x1="430" y1="150" x2="460" y2="150" stroke="#833C00" stroke-width="4"/>
+        <rect x="80" y="60" width="300" height="120" rx="4" stroke="#E4E9EE" stroke-width="1" opacity="0.35" fill="none" stroke-dasharray="3 3"/>
+        <circle cx="230" cy="75" r="3.2" fill="#0070C0"/>
+        <circle cx="230" cy="100" r="3.2" fill="#ED7D31"/>
+        <circle cx="230" cy="125" r="3.2" fill="#00B050"/>
+        <circle cx="230" cy="150" r="3.2" fill="#833C00"/>
+        <line x1="30" y1="75" x2="230" y2="75" stroke="#0070C0" stroke-width="1.4" opacity="0.6"/>
+        <line x1="30" y1="100" x2="230" y2="100" stroke="#ED7D31" stroke-width="1.4" opacity="0.6"/>
+        <line x1="30" y1="125" x2="230" y2="125" stroke="#00B050" stroke-width="1.4" opacity="0.6"/>
+        <line x1="30" y1="150" x2="230" y2="150" stroke="#833C00" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="75" x2="430" y2="75" stroke="#0070C0" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="100" x2="430" y2="100" stroke="#ED7D31" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="125" x2="430" y2="125" stroke="#00B050" stroke-width="1.4" opacity="0.6"/>
+        <line x1="230" y1="150" x2="430" y2="150" stroke="#833C00" stroke-width="1.4" opacity="0.6"/>
+        <text x="45" y="200" fill="#93A3B3" font-family="JetBrains Mono, monospace" font-size="9">CABLE A</text>
+        <text x="365" y="200" fill="#93A3B3" font-family="JetBrains Mono, monospace" font-size="9">CABLE B</text>
+      </svg>
+      <div class="hero-visual-caption">
+        <span>МОГ / МТОК / МКО</span>
+        <span>КДЗС 4525 · 60S</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick request moved right under the hero: the thing a mobile visitor came to do -->
+<section id="quick" style="padding-top:20px;">
+  <div class="wrap">
+    <div class="quick-request">
+      <h2>Оставить заявку</h2>
+      <p>Тип кабеля, число волокон, место монтажа — перезвоним и посчитаем.</p>
+      <form onsubmit="event.preventDefault(); alert('Заявка отправлена (демо-форма)');">
+        <div class="form-field">
+          <label for="name">Имя</label>
+          <input id="name" type="text" placeholder="Как к вам обращаться" required>
+        </div>
+        <div class="form-field">
+          <label for="phone">Телефон</label>
+          <input id="phone" type="tel" placeholder="+7 ___ ___ __ __" required>
+        </div>
+        <div class="form-field">
+          <label for="details">Что нужно сделать</label>
+          <textarea id="details" placeholder="Тип кабеля, число волокон, место монтажа"></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; cursor:pointer;">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-kicker"><span class="dash"></span> Услуги</div>
+      <h2 class="section-title">Полный цикл работ по ВОЛС</h2>
+      <p class="section-desc">От проектирования ввода до сдачи с протоколом измерений.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num mono">01</div>
+        <h3>Монтаж оптических муфт</h3>
+        <p>Разделка, сварка, укладка, герметизация — муфты МТОК, МОГ, МКО.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">02</div>
+        <h3>Сварка волокон</h3>
+        <p>Контроль затухания на каждом шве, укладка КДЗС.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">03</div>
+        <h3>Прокладка и подвес ОК</h3>
+        <p>Грунт, канализация, колодцы, опоры, самонесущий подвес.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">04</div>
+        <h3>Измерения и диагностика</h3>
+        <p>OTDR с обеих сторон, поиск и устранение обрывов.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">05</div>
+        <h3>Монтаж оптических кроссов</h3>
+        <p>Адаптерные панели, разварка на пигтейлы, маркировка портов.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num mono">06</div>
+        <h3>Аварийно-восстановительные работы</h3>
+        <p>Оперативный выезд, локализация повреждения, сварка на месте.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-kicker"><span class="dash"></span> Как мы работаем</div>
+      <h2 class="section-title">От допуска до протокола OTDR</h2>
+      <p class="section-desc">Один порядок на каждом объекте — вне зависимости от типа муфты.</p>
+    </div>
+    <div class="process-list">
+      <div class="process-item"><div class="process-index">01</div><div><h3>Подготовка и допуск</h3><p>Ограждение зоны, подбор муфты под тип и число кабелей.</p></div></div>
+      <div class="process-item"><div class="process-index">02</div><div><h3>Разделка кабеля</h3><p>Снятие оболочки, разделение по модулям и волокнам.</p></div></div>
+      <div class="process-item"><div class="process-index">03</div><div><h3>Ввод в муфту</h3><p>Фиксация силовых элементов, герметизация вводов.</p></div></div>
+      <div class="process-item"><div class="process-index">04</div><div><h3>Сварка волокон</h3><p>Скол, сварка, термоусадка КДЗС с контролем затухания.</p></div></div>
+      <div class="process-item"><div class="process-index">05</div><div><h3>Укладка и герметизация</h3><p>Радиус изгиба, сборка и опрессовка корпуса муфты.</p></div></div>
+      <div class="process-item"><div class="process-index">06</div><div><h3>Тестирование и сдача</h3><p>OTDR, протокол измерений, исполнительная документация.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="equipment">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-kicker"><span class="dash"></span> Оборудование</div>
+      <h2 class="section-title">С чем работаем</h2>
+      <p class="section-desc">Совместимость с основными сериями муфт, применяемых на сетях связи.</p>
+    </div>
+
+    <!-- mobile: card list -->
+    <div class="equip-list">
+      <div class="equip-card">
+        <div class="equip-top"><span class="equip-name">МТОК-Н8</span><span class="tag">тупиковая</span></div>
+        <div class="equip-specs">
+          <div><div class="equip-spec-label">ЁМКОСТЬ</div><div class="equip-spec-value">36 сростков</div></div>
+          <div><div class="equip-spec-label">ВВОДОВ</div><div class="equip-spec-value">4</div></div>
+          <div class="equip-note">Подвес, малогабаритная</div>
+        </div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-top"><span class="equip-name">МОГ-Т3-40</span><span class="tag">тупиковая</span></div>
+        <div class="equip-specs">
+          <div><div class="equip-spec-label">ЁМКОСТЬ</div><div class="equip-spec-value">40 сростков</div></div>
+          <div><div class="equip-spec-label">ВВОДОВ</div><div class="equip-spec-value">до 8</div></div>
+          <div class="equip-note">Колодец, тесное пространство</div>
+        </div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-top"><span class="equip-name">МТОК-Г4</span><span class="tag">тупиковая</span></div>
+        <div class="equip-specs">
+          <div><div class="equip-spec-label">ЁМКОСТЬ</div><div class="equip-spec-value">до 480</div></div>
+          <div><div class="equip-spec-label">ВВОДОВ</div><div class="equip-spec-value">10+</div></div>
+          <div class="equip-note">Магистральные узлы</div>
+        </div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-top"><span class="equip-name">МКО-С7/48</span><span class="tag">кросс</span></div>
+        <div class="equip-specs">
+          <div><div class="equip-spec-label">ЁМКОСТЬ</div><div class="equip-spec-value">48 сростков</div></div>
+          <div><div class="equip-spec-label">ВВОДОВ</div><div class="equip-spec-value">10</div></div>
+          <div class="equip-note">Магистраль + дроп-отводы FTTH</div>
+        </div>
+      </div>
+      <div class="equip-card">
+        <div class="equip-top"><span class="equip-name">МТОК-А1</span><span class="tag">тупиковая</span></div>
+        <div class="equip-specs">
+          <div><div class="equip-spec-label">ЁМКОСТЬ</div><div class="equip-spec-value">216 сростков</div></div>
+          <div><div class="equip-spec-label">ВВОДОВ</div><div class="equip-spec-value">3</div></div>
+          <div class="equip-note">Бронированный кабель, повив стальной проволоки</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- desktop: table -->
+    <table class="specs-table">
+      <thead>
+        <tr><th>Серия / модель</th><th>Тип</th><th>Ёмкость</th><th>Вводов</th><th>Применение</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>МТОК-Н8</td><td><span class="tag">тупиковая</span></td><td>36</td><td>4</td><td>Подвес, малогабаритная</td></tr>
+        <tr><td>МОГ-Т3-40</td><td><span class="tag">тупиковая</span></td><td>40</td><td>до 8</td><td>Колодец, тесное пространство</td></tr>
+        <tr><td>МТОК-Г4</td><td><span class="tag">тупиковая</span></td><td>до 480</td><td>10+</td><td>Магистральные узлы</td></tr>
+        <tr><td>МКО-С7/48</td><td><span class="tag">кросс</span></td><td>48</td><td>10</td><td>Магистраль + дроп-отводы FTTH</td></tr>
+        <tr><td>МТОК-А1</td><td><span class="tag">тупиковая</span></td><td>216</td><td>3</td><td>Бронированный кабель, повив стальной проволоки</td></tr>
+      </tbody>
+    </table>
+
+    <div class="swatch-strip" aria-hidden="true">
+      <div class="swatch" style="background:#0070C0"></div>
+      <div class="swatch" style="background:#ED7D31"></div>
+      <div class="swatch" style="background:#00B050"></div>
+      <div class="swatch" style="background:#833C00"></div>
+      <div class="swatch" style="background:#808080"></div>
+      <div class="swatch" style="background:#FFFFFF"></div>
+      <div class="swatch" style="background:#FF0000"></div>
+      <div class="swatch" style="background:#000000"></div>
+      <div class="swatch" style="background:#FFFF00"></div>
+      <div class="swatch" style="background:#7030A0"></div>
+      <div class="swatch" style="background:#FFC0CB"></div>
+      <div class="swatch" style="background:#00B0F0"></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="section-kicker"><span class="dash"></span> Контакты</div>
+      <h2 class="section-title">Обсудим объект</h2>
+      <p class="section-desc" style="margin-bottom:20px;">Позвоните напрямую, если удобнее.</p>
+
+      <div class="contact-item">
+        <div class="contact-label">ТЕЛЕФОН</div>
+        <div class="contact-value"><a href="tel:+70000000000">+7 (000) 000-00-00</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">EMAIL</div>
+        <div class="contact-value"><a href="mailto:info@optomontage.example">info@optomontage.example</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">РЕГИОН РАБОТ</div>
+        <div class="contact-value">Алматы и Алматинская область</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <footer>
+    <span>© 2026 ОптоМонтаж</span>
+    <span class="mono" style="color:var(--text-dim);">СХЕМА · СВАРКА · ИЗМЕРЕНИЯ</span>
+  </footer>
+</div>
+
+<!-- Sticky bottom bar: always-visible call + request, mobile only -->
+<div class="bottom-bar">
+  <a href="tel:+70000000000" class="call">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Позвонить
+  </a>
+  <a href="#quick">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Заявка
+  </a>
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
